@@ -13,6 +13,7 @@ public class FoxController : MonoBehaviour
     private Rigidbody2D rigidbody;
     private Animator animator;
     private bool isWalking = false;
+    int score = 0;
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -61,5 +62,15 @@ public class FoxController : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("Bonus"))
+        {
+            score++;
+            Debug.Log("Score: " + score);
+            other.gameObject.SetActive(false);
+        }
     }
 }
