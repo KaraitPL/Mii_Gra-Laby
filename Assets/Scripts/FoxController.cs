@@ -8,6 +8,7 @@ public class FoxController : MonoBehaviour
     [SerializeField] public float jumpForce = 6f;
     public LayerMask groundLayer;
     float rayLength = 0.85f;
+    bool isFacingRight = true;
 
     private Rigidbody2D rigidbody;
     private Animator animator;
@@ -25,6 +26,10 @@ public class FoxController : MonoBehaviour
         float horizontalValue = Input.GetAxis("Horizontal");
         if (horizontalValue != 0)
         {
+            if (horizontalValue < 0 && isFacingRight == true)
+                Flip();
+            if (horizontalValue > 0 && isFacingRight == false)
+                Flip();
             isWalking = true;
             float moveSpeed = horizontalValue * horizontalSpeed * Time.deltaTime;
             transform.Translate(moveSpeed, 0, 0, Space.World);
@@ -48,5 +53,13 @@ public class FoxController : MonoBehaviour
     {
         if(isGrounded())
             rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
+
+    private void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
     }
 }
