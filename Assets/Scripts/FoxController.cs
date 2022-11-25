@@ -10,23 +10,32 @@ public class FoxController : MonoBehaviour
     float rayLength = 0.85f;
 
     private Rigidbody2D rigidbody;
+    private Animator animator;
+    private bool isWalking = false;
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
 
     void Update()
     {
+        isWalking = false;
         float horizontalValue = Input.GetAxis("Horizontal");
-        float moveSpeed = horizontalValue * horizontalSpeed * Time.deltaTime;
-        transform.Translate(moveSpeed, 0, 0, Space.World);
+        if (horizontalValue != 0)
+        {
+            isWalking = true;
+            float moveSpeed = horizontalValue * horizontalSpeed * Time.deltaTime;
+            transform.Translate(moveSpeed, 0, 0, Space.World);
+        }
 
         if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
             Jump();
         }
-
+        animator.SetBool("isGrounded", isGrounded());
+        animator.SetBool("Walking", isWalking);
         //Debug.DrawRay(transform.position, rayLength * Vector3.down, Color.white, 1, false);
     }
 
