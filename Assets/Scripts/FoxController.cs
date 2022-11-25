@@ -6,6 +6,8 @@ public class FoxController : MonoBehaviour
 {
     [SerializeField] private float horizontalSpeed = 10f;
     [SerializeField] public float jumpForce = 6f;
+    public LayerMask groundLayer;
+    float rayLength = 0.85f;
 
     private Rigidbody2D rigidbody;
     private void Awake()
@@ -22,7 +24,20 @@ public class FoxController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            Jump();
         }
+
+        //Debug.DrawRay(transform.position, rayLength * Vector3.down, Color.white, 1, false);
+    }
+
+    bool isGrounded()
+    {
+        return Physics2D.Raycast(this.transform.position, Vector2.down, rayLength, groundLayer.value);
+    }
+
+    void Jump()
+    {
+        if(isGrounded())
+            rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 }
