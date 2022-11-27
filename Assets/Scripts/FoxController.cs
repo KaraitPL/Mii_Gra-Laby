@@ -25,8 +25,10 @@ public class FoxController : MonoBehaviour
 
     void Update()
     {
+        
         isWalking = false;
         float horizontalValue = Input.GetAxis("Horizontal");
+        Debug.Log(horizontalValue);
         if (horizontalValue != 0)
         {
             if (horizontalValue < 0 && isFacingRight == true)
