@@ -6,8 +6,10 @@ public class FoxController : MonoBehaviour
 {
     [SerializeField] private float horizontalSpeed = 10f;
     [SerializeField] public float jumpForce = 6f;
+    public float przesuniecieX = 0.37f; 
+    public float przesuniecieY = -0.82f; 
     public LayerMask groundLayer;
-    float rayLength = 0.85f;
+    float rayLength = 0.8f;
     bool isFacingRight = true;
 
     private Rigidbody2D rigidbody;
@@ -42,12 +44,12 @@ public class FoxController : MonoBehaviour
         }
         animator.SetBool("isGrounded", isGrounded());
         animator.SetBool("Walking", isWalking);
-        //Debug.DrawRay(transform.position, rayLength * Vector3.down, Color.white, 1, false);
+        Debug.DrawRay(transform.position + new Vector3(przesuniecieX, przesuniecieY, 0), rayLength * Vector2.left, Color.white, 1, false);
     }
 
     bool isGrounded()
     {
-        return Physics2D.Raycast(this.transform.position, Vector2.down, rayLength, groundLayer.value);
+        return Physics2D.Raycast(this.transform.position + new Vector3(przesuniecieX, przesuniecieY,0), Vector3.left, rayLength, groundLayer.value);
     }
 
     void Jump()
